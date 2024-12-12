@@ -1,0 +1,16 @@
+{% extends  'base.html.twig' %}
+
+{% block title %}
+
+Recette : {{ slug|upper }}
+
+{% endblock title %}
+
+
+{% block body %}
+
+{{ dump(app) }}
+
+{{ person.firstname ~ " " ~ person.lastname }}
+
+{% endblock body %}
