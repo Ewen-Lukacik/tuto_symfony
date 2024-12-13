@@ -2,15 +2,30 @@
 
 {% block title %}
 
-Recette : {{ slug|upper }}
+Recette : {{ recipe.title}}
 
 {% endblock title %}
 
 
 {% block body %}
 
-{{ dump(app) }}
+<h1>{{ recipe.title }}</h1>
 
-{{ person.firstname ~ " " ~ person.lastname }}
+<br>
 
+<h2>
+    Temps de préparation : {{ recipe.duration }}min
+</h2>
+
+<br>
+Recette créée le : {{ recipe.createdAt|date }}
+<br>
+Recette modifiée le : {{ recipe.updatedAt|date }}
+
+<br><br>
+<h3>Préparation :</h3>
+<br>
+<p>
+    {{ recipe.content | nl2br }}
+</p>
 {% endblock body %}
