@@ -53,12 +53,13 @@ class RecipeController extends AbstractController
      * @param Recipe
      * @param EntityManagerInterface
      */
-    #[Route('/recette/{id}/edit', name: 'recipe.edit', requirements: ['id' => '\d+'])]
+    #[Route('/recette/{id}/edit', name: 'recipe.edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
     {
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            // $recipe->setUpdatedAt(new \DateTimeImmutable());
             $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée');
             return $this->redirectToRoute('recipe.index');
@@ -67,5 +68,37 @@ class RecipeController extends AbstractController
             'recipe' => $recipe,
             'form' => $form
         ]);
+    }
+
+    /**
+     * @param Request
+     * @param EntityManagerInterface
+     */
+    #[Route('/recette/create', name: 'recipe.create')]
+    public function create(Request $request, EntityManagerInterface $em)
+    {
+        $recipe = new Recipe();
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            // $recipe->setCreatedAt(new \DateTimeImmutable());
+            // $recipe->setUpdatedAt(new \DateTimeImmutable());
+            $em->persist($recipe);
+            $em->flush();
+            $this->addFlash('success', 'La recette a bien été créée');
+            return $this->redirectToRoute('recipe.index');
+        }
+        return $this->render('recipe/create.html.twig', [
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/recette/{id}/edit', name: 'recipe.delete', methods: ["DELETE"])]
+    public function remove(Recipe $recipe, EntityManagerInterface $em)
+    {
+        $em->remove($recipe);
+        $em->flush();
+        $this->addFlash('success', 'La recette a bien été supprimée');
+        return $this->redirectToRoute('recipe.index');
     }
 }
