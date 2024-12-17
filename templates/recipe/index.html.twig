@@ -22,6 +22,7 @@ voici les recettes disponibles
     <thead>
         <tr>
             <th>Title</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -31,6 +32,9 @@ voici les recettes disponibles
             <a href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}">
                 {{ recipe.title }}
             </a>
+        </td>
+        <td>
+                {{ recipe.category.name }}
         </td>
         <td>
             <div class="d-flex gap-1">
