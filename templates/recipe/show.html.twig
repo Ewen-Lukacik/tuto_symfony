@@ -9,6 +9,7 @@ Recette : {{ recipe.title}}
 
 {% block body %}
 
+
 <h1>{{ recipe.title }}</h1>
 
 <br>
@@ -28,4 +29,11 @@ Recette modifiée le : {{ recipe.updatedAt|date }}
 <p>
     {{ recipe.content | nl2br }}
 </p>
+
+<h3>Categories : </h3>
+
+<a class="btn btn-outline-primary" href="{{ path('category.show', {id: recipe.category.id, slug: recipe.category.slug}) }}">
+    {{ recipe.category.name }}
+</a>
+
 {% endblock body %}

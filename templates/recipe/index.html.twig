@@ -13,10 +13,9 @@
 voici les recettes disponibles
 
 <br><br>
-
-Ajouter une recette 
-<a class="btn btn-primary btn-sm" href="{{ path('recipe.create') }}">
-    Créer
+ 
+<a class="btn btn-outline-primary btn-sm" href="{{ path('recipe.create') }}">
+    Ajouter une recette 
 </a>
 
 <table class="table">
@@ -40,7 +39,7 @@ Ajouter une recette
                 </a>
                 <form action="{{ path('recipe.delete', {id: recipe.id}) }}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
-                    <button class="btn btn-danger btn-sm" type="submit">SUPPRIMER</button>
+                    <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
                 </form>
             </div>
         </td>

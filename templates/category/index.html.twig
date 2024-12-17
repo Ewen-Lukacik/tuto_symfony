@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CategoryController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+<a class="btn btn-outline-primary btn-sm" href="{{ path('category.create') }}">
+    Create a new category
+</a>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category Name </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% for category in categories %}
+    <tr>
+        <td>
+            <a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">
+                {{ category.name }}
+            </a>
+        </td>
+        <td>
+            <div class="d-flex gap-1">
+                <a class="btn btn-primary btn-sm" href="{{ path('category.edit', {id: category.id}) }}">
+                    Edit
+                </a>
+                <form action="{{ path('category.delete', {id: category.id}) }}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+   
+    {% endfor %}
+</table>
+{% endblock %}
