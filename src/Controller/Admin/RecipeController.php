@@ -24,10 +24,11 @@ class RecipeController extends AbstractController
      * @param RecipeRepository
      */
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $recipeRepository): Response
+    public function index(RecipeRepository $recipeRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
-        $recipes = $recipeRepository->findAll();
         
+        $recipes = $recipeRepository->findWithDurationLowerthan(60);
+
         return $this->render('admin/recipe/index.html.twig', [
             'recipes' => $recipes
         ]);

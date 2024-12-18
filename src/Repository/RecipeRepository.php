@@ -30,6 +30,7 @@ class RecipeRepository extends ServiceEntityRepository
     public function findWithDurationLowerthan(int $duration):array
     {
         return $this->createQueryBuilder('r')
+            ->select('r')
             ->where('r.duration < :duration')
             ->orderBy('r.duration', 'ASC')
             ->setMaxResults(10)

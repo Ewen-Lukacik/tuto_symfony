@@ -25,11 +25,11 @@ class Category
      * @var Collection<int, Recipe>
      */
     #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'category')]
-    private Collection $category;
+    private Collection $recipes;
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,24 +64,24 @@ class Category
     /**
      * @return Collection<int, Recipe>
      */
-    public function getCategory(): Collection
+    public function getRecipes(): Collection
     {
-        return $this->category;
+        return $this->recipes;
     }
 
-    public function addCategory(Recipe $category): static
+    public function addRecipe(Recipe $recipe): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-            $category->setCategory($this);
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeCategory(Recipe $category): static
+    public function removeRecipe(Recipe $category): static
     {
-        if ($this->category->removeElement($category)) {
+        if ($this->recipes->removeElement($category)) {
             // set the owning side to null (unless already changed)
             if ($category->getCategory() === $this) {
                 $category->setCategory(null);
