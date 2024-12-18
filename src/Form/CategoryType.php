@@ -14,6 +14,11 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class CategoryType extends AbstractType
 {
+    public function __construct(private FormListenerFactory $listenerFactory)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -24,7 +29,7 @@ class CategoryType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Save'
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->autoSlug(...))
+            ->addEventListener(FormEvents::PRE_SUBMIT, $this->listenerFactory->autoSlug('name'))
         ;
     }
 

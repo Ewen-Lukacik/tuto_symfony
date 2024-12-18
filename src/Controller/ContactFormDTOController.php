@@ -30,31 +30,27 @@ class ContactFormDTOController extends AbstractController
         $form = $this->createForm(ContactFormType::class, $data);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
-            // $email = (new TemplatedEmail())
-            //     ->to('contact@demo.fr')
-            //     ->from($data->email)
-            //     ->subject('Email sending test from')
-            //     ->htmlTemplate('emails/contact.html.twig')
-            //     ->context(['data' => $data]);
+
+
+        
+            $email = (new TemplatedEmail())
+                ->to('contact@demo.fr')
+                ->from($data->email)
+                ->subject('Email sending test from')
+                ->htmlTemplate('emails/contact.html.twig')
+                ->context(['data' => $data]);
 
            
-            // try {
-            //     $mailer->send($email);
-            //     $logger->info('Email envoyé avec succès');
-            // } catch (\Exception $e) {
-            //     $logger->error('Erreur d\'envoi d\'email : ' . $e->getMessage());
-            // }
-            $this->addFlash('success', 'Email sent');
+            try {
+                $mailer->send($email);
+                $logger->info('Email envoyé avec succès');
+                $this->addFlash('success', 'Email sent');
+            } catch (\Exception $e) {
+                $logger->error('Erreur d\'envoi d\'email : ' . $e->getMessage());
+            }
+
+
+           
             return $this->redirectToRoute('contact');
         }
         return $this->render('contact_form_dto/contact.html.twig', [

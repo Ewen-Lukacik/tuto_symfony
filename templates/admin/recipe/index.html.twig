@@ -1,4 +1,4 @@
-{% extends  'base.html.twig' %}
+{% extends  'admin/admin.html.twig' %}
 
 {% block title %}
 
@@ -14,7 +14,7 @@ voici les recettes disponibles
 
 <br><br>
  
-<a class="btn btn-outline-primary btn-sm" href="{{ path('recipe.create') }}">
+<a class="btn btn-outline-primary btn-sm" href="{{ path('admin.recipe.create') }}">
     Ajouter une recette 
 </a>
 
@@ -23,13 +23,13 @@ voici les recettes disponibles
         <tr>
             <th>Title</th>
             <th>Category</th>
-            <th>Actions</th>
+            <th style="width: 200px;">Actions</th>
         </tr>
     </thead>
     {% for recipe in recipes %}
     <tr>
         <td>
-            <a href="{{ path('recipe.show', {id: recipe.id, slug: recipe.slug}) }}">
+            <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
                 {{ recipe.title }}
             </a>
         </td>
@@ -38,10 +38,10 @@ voici les recettes disponibles
         </td>
         <td>
             <div class="d-flex gap-1">
-                <a class="btn btn-primary btn-sm" href="{{ path('recipe.edit', {id: recipe.id}) }}">
+                <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
                     Edit
                 </a>
-                <form action="{{ path('recipe.delete', {id: recipe.id}) }}" method="post">
+                <form action="{{ path('admin.recipe.delete', {id: recipe.id}) }}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
                     <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
                 </form>

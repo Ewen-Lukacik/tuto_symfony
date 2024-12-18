@@ -19,22 +19,20 @@
     <thead>
         <tr>
             <th>Category Name </th>
-            <th>Actions</th>
+            <th style="width: 200px;">Actions</th>
         </tr>
     </thead>
     {% for category in categories %}
     <tr>
         <td>
-            <a href="{{ path('category.show', {id: category.id, slug: category.slug}) }}">
-                {{ category.name }}
-            </a>
+            {{ category.name }}
         </td>
         <td>
             <div class="d-flex gap-1">
                 <a class="btn btn-primary btn-sm" href="{{ path('category.edit', {id: category.id}) }}">
                     Edit
                 </a>
-                <form action="{{ path('category.delete', {id: category.id}) }}" method="post">
+                <form  action="{{ path('category.delete', {id: category.id}) }}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
                     <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
                 </form>
