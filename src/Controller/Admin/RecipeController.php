@@ -14,7 +14,7 @@ use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Routing\Requirement\Requirement;
-use Symfony\Component\Validator\Constraints\Required;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/recettes', name:'admin.recipe.')]
 class RecipeController extends AbstractController
@@ -24,8 +24,10 @@ class RecipeController extends AbstractController
      * @param RecipeRepository
      */
     #[Route('/', name: 'index')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(RecipeRepository $recipeRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
+    
         
         $recipes = $recipeRepository->findWithDurationLowerthan(60);
 

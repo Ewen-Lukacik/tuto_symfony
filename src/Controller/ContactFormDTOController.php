@@ -12,11 +12,12 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 use Psr\Log\LoggerInterface;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ContactFormDTOController extends AbstractController
 {
     #[Route('/contact', name: 'contact')]
+    #[IsGranted('ROLE_VERIFIED')]
     public function index(Request $request, MailerInterface $mailer, LoggerInterface $logger): Response
     {
         $data = new ContactDTO();
