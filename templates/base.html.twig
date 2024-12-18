@@ -30,6 +30,11 @@
                   <li class="nav-item">
                     <a class="nav-link {{ app.current_route starts with 'recipe.' ? "active" : ''}}" href="{{ path('contact' )}}">Contact</a>
                   </li>
+                  {% if is_granted('ROLE_VERIFIED') %}
+                    <li class="nav-item">
+                      <a class="btn btn-danger btn-sm nav-link" href="{{ path('app_logout' )}}">Logout</a>
+                    </li>
+                  {% endif %}
                 </ul>
               </div>
             </div>
