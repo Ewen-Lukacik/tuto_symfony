@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\DTO\CategorywithCountDTO;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +17,19 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    /**
+     * Summary of findAllWithCount
+     * @return CategorywithCountDTO[]
+     */
+    public function findAllWithCount():array
+    {
+        return $this->createQueryBuilder('c')
+        ->select('NEW App\DTO\CategorywithCountDTO(c.id, c.name, COUNT(c.id))')
+        ->leftJoin('c.recipes', 'r')
+        ->groupBy('c.id')
+        ->getQuery()
+        ->getResult();
+    }
     //    /**
     //     * @return Category[] Returns an array of Category objects
     //     */

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\Genre;
 use App\Repository\RecipeRepository;
 use App\Validator\BanWord;
 use Doctrine\DBAL\Types\Types;
@@ -57,6 +58,9 @@ class Recipe
     #[Vich\UploadableField(mapping: 'recipe_thumbnails', fileNameProperty: 'thumbnail')]
     #[Image]
     private ?File $thumbnailFile = null;
+
+    #[ORM\Column(enumType: Genre::class)]
+    private ?Genre $enum = null;
 
     public function getId(): ?int
     {
@@ -167,6 +171,18 @@ class Recipe
     public function setThumbnailFile(?File $thumbnailFile): static
     {
         $this->thumbnail = $thumbnailFile;
+
+        return $this;
+    }
+
+    public function getEnum(): ?Genre
+    {
+        return $this->enum;
+    }
+
+    public function setEnum(Genre $enum): static
+    {
+        $this->enum = $enum;
 
         return $this;
     }

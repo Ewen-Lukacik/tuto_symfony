@@ -75,6 +75,8 @@ class RecipeController extends AbstractController
         $recipe->setCategory($categoryId);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+            
+            $this->uploadFile($request, $recipe, $form);
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success', 'La recette a bien été créée');

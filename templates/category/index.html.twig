@@ -19,6 +19,7 @@
     <thead>
         <tr>
             <th>Category Name </th>
+            <th>Recettes </th>
             <th style="width: 200px;">Actions</th>
         </tr>
     </thead>
@@ -26,6 +27,9 @@
     <tr>
         <td>
             {{ category.name }}
+        </td>
+        <td>
+            {{ category.count }}
         </td>
         <td>
             <div class="d-flex gap-1">
