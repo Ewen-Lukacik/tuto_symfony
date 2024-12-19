@@ -9,42 +9,55 @@
 
 {% block body %}
 
- 
-<a class="btn btn-outline-primary btn-sm" href="{{ path('admin.recipe.create') }}">
-    Ajouter une recette 
-</a>
+    
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('admin.recipe.create') }}">
+        Ajouter une recette 
+    </a>
 
-<table class="table">
-    <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(recipes, 'ID', 'r.id') }}</th>
+                <th>{{ knp_pagination_sortable(recipes, 'Title', 'r.title') }}</th>
+                <th>{{ knp_pagination_sortable(recipes, 'Category', 'c.name') }}</th>
+                <th style="width: 200px;">Actions</th>
+            </tr>
+        </thead>
+        {% for recipe in recipes %}
         <tr>
-            <th>Title</th>
-            <th>Category</th>
-            <th style="width: 200px;">Actions</th>
-        </tr>
-    </thead>
-    {% for recipe in recipes %}
-    <tr>
-        <td>
-            <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
-                {{ recipe.title }}
-            </a>
-        </td>
-        <td>
-                {{ recipe.category.name }}
-        </td>
-        <td>
-            <div class="d-flex gap-1">
-                <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
-                    Edit
+            <td> {{ recipe.id }} </td>
+            <td>
+                <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
+                    {{ recipe.title }}
                 </a>
-                <form action="{{ path('admin.recipe.delete', {id: recipe.id}) }}" method="post">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
-                </form>
-            </div>
-        </td>
-    </tr>
-   
-    {% endfor %}
-</table>
+            </td>
+            <td>
+                    {{ recipe.category.name }}
+            </td>
+            <td>
+                <div class="d-flex gap-1">
+                    <a class="btn btn-primary btn-sm" href="{{ path('admin.recipe.edit', {id: recipe.id}) }}">
+                        Edit
+                    </a>
+                    <form action="{{ path('admin.recipe.delete', {id: recipe.id}) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button class="btn btn-danger btn-sm" type="submit">DELETE</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    
+        {% endfor %}
+    </table>
+
+{# total items count #}
+<div class="count">
+    Total Recipes : 
+    {{ recipes.getTotalItemCount }}
+</div>
+
+{# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(recipes) }}
+</div>
 {% endblock body %}

@@ -16,6 +16,7 @@ use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 #[Route('/admin/recettes', name:'admin.recipe.')]
 class RecipeController extends AbstractController
@@ -26,12 +27,12 @@ class RecipeController extends AbstractController
      */
     #[Route('/', name: 'index')]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(RecipeRepository $recipeRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
+    public function index(Request $request, RecipeRepository $recipeRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em): Response
     {
     
-        
-        $recipes = $recipeRepository->findWithDurationLowerthan(60);
-
+        $page = $request->query->getInt('page', 1);
+        $recipes = $recipeRepository->paginateRecipes($page);
+ 
         return $this->render('admin/recipe/index.html.twig', [
             'recipes' => $recipes
         ]);
@@ -43,11 +44,14 @@ class RecipeController extends AbstractController
      * @param EntityManagerInterface
      */
     #[Route('/{id}', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => Requirement::DIGITS] )]
-    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em)
+    public function edit(Request $request, Recipe $recipe, EntityManagerInterface $em, UploaderHelper $helper)
     {
+
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+
+            $this->uploadFile($request, $recipe, $form);
             $em->flush();
             $this->addFlash('success', 'La recette a bien été modifiée');
             return $this->redirectToRoute('admin.recipe.index');
@@ -88,5 +92,16 @@ class RecipeController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'La recette a bien été supprimée');
         return $this->redirectToRoute('admin.recipe.index');
+    }
+
+    public function uploadFile(Request $request, Recipe $recipe, $form){
+         /**
+             * @var UploadedFile
+             */
+            $file = $form->get('thumbnailFile')->getData();
+            $filename = $recipe->getId() . "-" . $recipe->getSlug() . '.' . $file->getClientOriginalExtension();
+            $fileMovedDir = $this->getParameter('kernel.project_dir') . '/public/images/recettes';
+            $file->move($fileMovedDir, $filename);
+            $recipe->setThumbnail($filename);
     }
 }
